@@ -1,0 +1,31 @@
+{
+  "name": "rachel-parcell-project",
+  "version": "0.1.0",
+  "private": true,
+  "main": "server/server.js",
+  "proxy": "http://localhost:3030",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.2",
+    "dotenv": "^5.0.1",
+    "express": "^4.16.3",
+    "express-session": "^1.15.6",
+    "massive": "^4.7.1",
+    "material-design-icons": "^3.0.1",
+    "react": "^16.3.0",
+    "react-dom": "^16.3.0",
+    "react-redux": "^5.0.7",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "1.1.2",
+    "react-stripe-checkout": "^2.6.3",
+    "redux": "^3.7.2",
+    "stripe": "^5.8.0",
+    "sweetalert2": "^7.18.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}

@@ -1,0 +1,83 @@
+.home-page{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.shopping{
+    margin-bottom: 8px;
+}
+
+.bar{
+    border-bottom: 6px solid #FDF0F0;
+    width: 100%;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-size: 25px;
+}
+
+.specifics-container{
+    width: auto;
+    max-width: 720px;
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.tops{
+    background-image: url("./../../pictures/Shea Creme Top.jpg");
+}
+
+.skirts{
+    background-image: url("./../../pictures/Peony Blossom Pleated Skirt.jpg")
+}
+
+.dresses{
+    background-image: url("./../../pictures/Blushing Bell Sleeve Dress.jpg")    
+}
+
+.all{
+    background-image: url("./../../pictures/Red_Bow.jpg")    
+}
+
+.tops, .skirts, .dresses, .all, .spring{
+    background-position: center;
+    background-size: 300px;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    width: 300px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Dancing Script", cursive;
+    font-size: 50px;
+    margin: 20px 30px;
+}
+
+.spring{
+    background-image: url("./../../pictures/Spring_Lace_Banner.jpg");
+    background-size: 100%;
+    margin: 20px;
+    width: 710px;
+    background-position: top;
+}
+
+.shop-the-season{
+    color: black;
+    background-color: #FDF0F0;
+    margin-bottom: 30px;
+}
+
+@media (max-width: 736px){
+    .spring{
+        width: 95%;
+    }
+}

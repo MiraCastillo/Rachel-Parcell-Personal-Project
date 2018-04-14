@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Parisienne|Rochester|Rufina|Vidaloka');
+
+.nav-bar{
+    height: 80px;
+    width: 100%;
+    background-color: #FDF0F0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+}
+
+.rachel{
+    font-family: 'Vidaloka', serif;
+    font-size: 190%;
+}
+
+.collection{
+    font-family: 'Parisienne', cursive;
+    font-size: 170%;
+}
+
+.brand{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.cart-container{
+    display: flex;
+    width: 26px;
+}
+
+.login, .cart-word{
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-size: 20px;
+}
+
+a:link {
+    text-decoration: none;
+    color: black;
+}
+
+a:visited {
+    text-decoration: none;
+    color: black;    
+}
+
+a:hover {
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+}
+
+a:active {
+    text-decoration: none;
+    color: black;    
+}

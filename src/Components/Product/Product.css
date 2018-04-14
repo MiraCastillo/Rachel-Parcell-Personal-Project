@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway');
+
+.the-product-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-top: 110px;
+    padding-bottom: 40px;
+}
+
+.single-picture{
+    width: 430px;
+    height: 80%;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.single-info{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.single-name, .single-price, .single-size, .single-quantity, .single-description {
+    margin: 15px;
+}
+
+.single-quantity{
+    width: 40px;
+    height: 30px;
+    text-align: center;
+}
+
+.quantity-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center; 
+}
+
+button{
+    font-family: "Monsterrat";
+    font-size: 15px;
+    border-radius: 4px;
+}
+
+.add-to-cart{
+    background-color: #FDF0F0;
+    margin-top: 15px;
+}
+
+.single-quantity, .quantity-label{
+    margin: 5px;
+}
+
+.single-name{
+    font-family: "Dancing Script", cursive;
+    font-size: 30px;
+    text-align: center;
+}
+
+.single-price, .single-size, .quantity-label, .single-quantity{
+    font-family: "Monsterrat";
+    font-size: 17px;
+}
+
+.single-description{
+    font-family: 'Raleway', sans-serif;
+    max-width: 375px;
+    margin-top: 50px;
+    text-align: center;
+}
+
+@media(max-width: 700px) {
+    .single-picture{
+        width: 80%;
+        height:80%;
+    }
+}

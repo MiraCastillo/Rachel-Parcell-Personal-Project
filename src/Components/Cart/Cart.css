@@ -1,0 +1,74 @@
+.cart{
+    padding-top: 110px;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+}
+
+.label{
+    margin: 12px;
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-size: 20px;
+}
+
+.total-label{
+    margin-right: 12px;
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-size: 20px;
+}
+
+.cart-item{
+    display: flex;
+    flex-direction: row;
+    border: 4px solid #FDF0F0;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px;
+    overflow-wrap: wrap;
+    margin: 10px;
+}
+
+.cart-picture{
+    height: 100px;
+}
+
+.cart-name{
+    font-family: "Dancing Script", cursive;
+    font-size: 23px;
+    width: 115px;
+    text-align: center;
+}
+
+.cart-price, .cart-quantity, .item-total, .cart-tax, .cart-total{
+    font-family: "Monsterrat";
+    font-size: 21px;
+}
+
+.update-quantity{
+    width: 30px;
+}
+
+.update-input-and-button{
+    align-items: space-between;
+}
+
+.cart-checkout{
+    float: right;
+    margin: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+}
+
+.total-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}

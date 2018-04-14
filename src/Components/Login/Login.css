@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css?family=Dancing+Script|Parisienne');
+
+.login-page{
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-image: url("http://biteinto.info/wp-content/uploads/2016/02/rustic-barn-wood-background-and-farms-building-rustic-farm-barn-vintage-53-wallpaper-background-20.jpg")
+}
+
+.login-p{
+    font-family: "Dancing Script", cursive;
+    font-size: 58px;
+    margin-bottom: 4%;
+} 
+
+.not-member{
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    font-family: "Dancing Script", cursive;
+    font-size: 25px;
+}
+
+.login-container{
+    background-color: #FDF0F0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 340px;
+    width: 380px;
+}
+
+.q, .s{
+    margin: 6px;
+}
+
+.i-l{
+    width: 60%;
+    margin: 10px;
+}
+
+@media(max-width: 700px) {
+.login-page{
+    background-image: url("http://www.easywallprints.com/upload/designs/wood-background-with-lilac-flowers-zoom-1.jpg")
+}
+
+.login-container{
+    background-color: #FDF0F0;
+    height: 40%;
+    width: 80%;
+}
+
+
+}

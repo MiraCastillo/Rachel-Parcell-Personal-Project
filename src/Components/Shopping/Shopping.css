@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css?family=Dancing+Script|Parisienne');
+
+.all-products{
+    display: flex;
+    flex-direction: row;
+    padding-top: 110px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.product-container{
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 14px;
+}
+
+.product-image{
+    width: 290px;
+}
+
+.product-name{
+    font-family: "Dancing Script", cursive;
+    font-size: 140%;
+}
+
+.product-price{
+    font-family: "Dancing Script", cursive;
+    font-size: 120%;
+}
