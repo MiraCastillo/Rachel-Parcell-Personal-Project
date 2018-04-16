@@ -3,13 +3,15 @@ import React, { Component } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import swal from "sweetalert2";
+import {connect} from "react-redux";
+import {updateUserId, updateUsername, updateUserName, updateOrderId, updateProducts, updateTotal, updateLoggedInStatus, updateQuantity} from "./../../reducer"
 
-export default class Login extends Component {
+class Login extends Component {
   constructor() {
     super();
     this.state = {
       username: "",
-      password: ""
+      password: "",
     };
   }
 
@@ -28,8 +30,23 @@ export default class Login extends Component {
         password: this.state.password
       })
       .then(user => {
+        // this.setState({password: ""})
         if (user.data[0]) {
           this.props.history.push("/");
+          axios.post("/api/allUserInfo", {username: this.state.username, password: this.state.password}).then(res => {
+            console.log("I'm running", res)
+            var {userid, username, name, total, quantity} = res.data[0];
+            var {loggedIn, orderid} = res.data[1]
+            var {updateUserId, updateUsername, updateUserName, updateOrderId, updateProducts, updateTotal, updateLoggedInStatus, updateQuantity} = this.props;
+            updateUserId(userid);
+            updateUsername(username);
+            updateUserName(name);
+            updateOrderId(orderid);
+            updateProducts();
+            updateTotal(total);
+            updateLoggedInStatus(loggedIn);
+            updateQuantity(quantity);
+          })
         } else {
           swal({
             type: "error",
@@ -64,3 +81,10 @@ export default class Login extends Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return{
+  }
+}
+
+export default connect(mapStateToProps, {updateUserId, updateUsername, updateUserName, updateOrderId, updateProducts, updateTotal, updateLoggedInStatus, updateQuantity})(Login)

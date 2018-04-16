@@ -11,28 +11,33 @@ module.exports = {
         var {username, password} = req.body
         req.app.get("db").checkForUser([username, password]).then(user => {
             console.log("checking")
-            res.status(200).send(user)
+            
             if(user[0]){
-                console.log("first if", user[0].id)
                 req.session.user.id = user[0].id;
                 req.session.user.loggedIn = true;
                 req.app.get("db").checkingForOrder([user[0].id]).then(orderInfo => {
-                    console.log(orderInfo)
                     if(orderInfo[0]){
                         if(orderInfo[0].status === true){
                             console.log("active order")
-                            req.session.user.orderid = orderInfo[0].orderid
+                            req.session.user.orderid = orderInfo[0].id
                         } 
-                    }
-                    else {
-                        console.log("non-active order", user[0].id)
-                            req.app.get("db").changeOrderStatus([user[0].id]).then(info => {
-                                req.session.user.order = info.id
+                        else {
+                            console.log("non-active order", user[0].id)
+                            req.app.get("db").createNewOrder([user[0].id]).then(info => {
+                                req.session.user.orderid = info.id
                             })
+                        }
                     }
-
+                    res.status(200).send([user, req.session.user])
                 })
             }
+            
+        })
+    },
+    allInfo: (req, res, next) => {
+        var{username, password} = req.body
+        req.app.get("db").getAll([username, password]).then(info => {
+            res.status(200).send([info, req.session.user])
         })
     },
     newUser: (req, res) =>{
@@ -67,7 +72,8 @@ module.exports = {
         })
     },
     addToCart: (req, res) => {
-        req.app.get("db").addToCart([req.params.quantity]).then(res => {
+        var {quantity, cartId, productId} = req.params
+        req.app.get("db").addToCart([productId, cartId, quantity]).then(res => {
             res.sendStatus(200)
         })
     },
@@ -85,7 +91,6 @@ module.exports = {
         })
     },
     payment: (req, res, next) => {
-        console.log(req.body.amount)
         const charge = stripe.charges.create({
             amount: req.body.amount,
             currency: "usd",
@@ -99,5 +104,6 @@ module.exports = {
                 return res.sendStatus(200)
             }
         })
-    }
+    },
+    
 }

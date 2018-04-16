@@ -27,7 +27,7 @@ export default class Product extends Component{
     }
 
     addToCart(id) {
-        axios.post(`/api/addToCart/${id}`, {quantity: this.props.quantity}).then(res => {
+        axios.post(`/api/addToCart/${id}`, {productId: this.state.product, cartId: "", quantity: this.props.quantity}).then(res => {
             swal({
                 position: "top-end",
                 type: "success",

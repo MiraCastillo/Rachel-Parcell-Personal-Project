@@ -26,17 +26,15 @@ var checkForSession = (req, res, next)=>{
     if(req.session.user){
         next();
     } else {
-        req.session.user = {id:0, loggedIn:false}
+        console.log("hit")
+        req.session.user = {id:0, loggedIn:false, orderid:0}
         next()
     }
 };
 
-
-
-app.use(checkForSession);
-
 app.get("/api/allProducts", c.read)
-app.post("/api/loginUser", c.check)
+app.post("/api/loginUser", checkForSession, c.check)
+app.post("/api/allUserInfo", c.allInfo)
 app.post("/api/newUser", c.newUser)
 app.get("/api/getDresses", c.dresses)
 app.get("/api/getTops", c.tops)
