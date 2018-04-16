@@ -1,15 +1,30 @@
 var initialState = {
-    userid : 0,
+    userId : 0,
     userName : "",
     userUserName : "",
     orderId : 0,
     products : [],
-    total: 0
+    total: 0,
+    loggedIn: false
 }
 
-export default function reducer(state = initialState) {
-    switch(action.payload) {
+const CHANGE_TOTAL = "CHANGE_TOTAL";
+
+export function changeTotal(total){
+    return{
+        type: CHANGE_TOTAL,
+        payload: total
+    }
+};
+
+
+
+export default function reducer(state = initialState, action) {
+    switch(action.type) {
+        case CHANGE_TOTAL:
+            return Object.assign({}, state, {total: action.payload});
         default:
-        return state
+        return state;
     }
 }
+

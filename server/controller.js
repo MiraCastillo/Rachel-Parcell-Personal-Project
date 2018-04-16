@@ -67,7 +67,9 @@ module.exports = {
         })
     },
     addToCart: (req, res) => {
-        req.app.get("db").addToCart([req.params])
+        req.app.get("db").addToCart([req.params.quantity]).then(res => {
+            res.sendStatus(200)
+        })
     },
     checking: (req, res) => {
         

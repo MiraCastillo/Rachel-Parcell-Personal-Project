@@ -10,7 +10,7 @@ export default class Product extends Component{
         super();
         this.state= {
             product:[],
-            quantity: 1,
+            quantity: 0,
             loggedIn: false
         }
     }
@@ -22,8 +22,11 @@ export default class Product extends Component{
         })
     } 
 
+    handleQuantity(e) {
+        this.setState({quantity:e})
+    }
+
     addToCart(id) {
-        // if()
         axios.post(`/api/addToCart/${id}`, {quantity: this.props.quantity}).then(res => {
             swal({
                 position: "top-end",
@@ -46,7 +49,7 @@ export default class Product extends Component{
                     <div className="single-size">{product.size}</div>
                     <div className="quantity-container">
                     <div className="quantity-label">Quantity: </div>
-                    <input className="single-quantity" placeholder="#"/>
+                    <input onChange={(e) => this.handleQuantity(e.target.value)} className="single-quantity" placeholder="#"/>
                     </div>
                     <button onClick={() => this.addToCart(product.id)} className="add-to-cart">Add to cart</button>
                     <div className="single-description">{product.description}</div>

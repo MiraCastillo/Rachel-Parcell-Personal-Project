@@ -45,7 +45,7 @@ app.get("/api/getSpring", c.spring)
 app.get("/api/product/:id", c.item)
 
 var checkingForUser = (req, res, next) => {
-    console.log("I'm checking")
+    console.log("I'm checking if you're logged in")
     if(req.session.user.loggedIn = true){
         next();
     } else{
