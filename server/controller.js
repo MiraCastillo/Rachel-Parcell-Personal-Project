@@ -10,12 +10,29 @@ module.exports = {
     check: (req, res) => {
         var {username, password} = req.body
         req.app.get("db").checkForUser([username, password]).then(user => {
+            console.log("checking")
             res.status(200).send(user)
-            // if(user[0]){
-            //     req.session.user.id = user[0].id;
-            //     req.session.user.loggedIn = true;
-            //     req.session.orderid = 
-            // }
+            if(user[0]){
+                console.log("first if", user[0].id)
+                req.session.user.id = user[0].id;
+                req.session.user.loggedIn = true;
+                req.app.get("db").checkingForOrder([user[0].id]).then(orderInfo => {
+                    console.log(orderInfo)
+                    if(orderInfo[0]){
+                        if(orderInfo[0].status === true){
+                            console.log("active order")
+                            req.session.user.orderid = orderInfo[0].orderid
+                        } 
+                    }
+                    else {
+                        console.log("non-active order", user[0].id)
+                            req.app.get("db").changeOrderStatus([user[0].id]).then(info => {
+                                req.session.user.order = info.id
+                            })
+                    }
+
+                })
+            }
         })
     },
     newUser: (req, res) =>{
