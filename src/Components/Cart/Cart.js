@@ -88,10 +88,9 @@ class Cart extends Component {
       );
     });
     var amount = allTotals.reduce((total, val) => {
-      total+val
+      return total+val
     }, 0);
-    console.log(allTotals)
-    console.log(amount)
+    axios.post("/api/updateTotal", {total: amount})
     var amountInPennies = amount*100
     return (
       <div>

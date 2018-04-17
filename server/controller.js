@@ -115,5 +115,13 @@ module.exports = {
             res.status(200).send(res)
         })
     },
+    updateTotal: (req, res) => {
+        var {total} = req.body.total;
+        var {userId} = req.session.user.id
+        console.log(req.body, req.session.user.id)
+        req.app.get("db").updateCartTotal(total, userId).then(rest => {
+            res.sendStatus(200)
+        })
+    }
     
 }
