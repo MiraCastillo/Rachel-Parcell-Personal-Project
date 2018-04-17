@@ -54,9 +54,10 @@ app.use(checkingForUser)
 
 app.post("/api/addToCart/:id", c.addToCart)
 app.get("/api/check", c.checking)
-app.get("/api/getCart", c.cart)
+app.post("/api/getCart", c.cart)
 app.delete("/api/deleteItem", c.delete)
 app.post("/api/payment", c.payment)
+app.post("/api/newQuantity", c.newQuantity)
 
 
 app.listen(SERVER_PORT, console.log(`Zombies to fight on port ${SERVER_PORT}`))

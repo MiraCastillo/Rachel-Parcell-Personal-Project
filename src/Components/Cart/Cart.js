@@ -4,8 +4,11 @@ import axios from "axios";
 import "./Cart.css";
 import {Link} from "react-router-dom";
 import Checkout from "./../Checkout/Checkout";
+import {connect} from "react-redux";
+import {updateQuantity} from "./../../reducer";
+import swal from "sweetalert2";
 
-export default class Cart extends Component {
+class Cart extends Component {
   constructor() {
     super();
     this.state = {
@@ -14,6 +17,13 @@ export default class Cart extends Component {
       prices: [],
       quantity: 0
     };
+  }
+
+  handleClick(){
+    this.props.updateQuantity(this.state.quantity)
+    axios.post("/api/newQuantity", {quantity: this.state.quantity, orderId: this.props.orderId
+      // , productId:
+    })
   }
 
   handleNewQuantity(e){
@@ -25,15 +35,23 @@ export default class Cart extends Component {
   }
 
   componentDidMount() {
-    axios.get("/api/getCart").then(info => {
+    axios.post("/api/getCart", {userId: this.props.userId, orderId: this.props.orderId}).then(info => {
       this.setState({ information: info.data });
+    }).catch(err => {
+      swal({
+        type: 'error',
+        title: 'Oops...',
+        text: 'You need to be signed in to view this page!',
+      })
     });
   }
 
   render() {
+    var allTotals = []
     var cartInfo = this.state.information.map(product => {
+      var productTotal = product.price * product.quantity
+      allTotals.push(productTotal)
       this.state.prices.push(product.price);
-      // this.setState({quantity: product.quantity});
       return (
         <div className="cart-item">
           <Link to={`/product/${product.id}`} >
@@ -55,13 +73,13 @@ export default class Cart extends Component {
               <div className="label">Update Quantity:</div>
               <div className="update-input-and-button">
                 <input onChange={(e)=>this.handleNewQuantity(e.target.value)}className="update-quantity" placeholder="#" />
-                <button className="up-quantity">Update</button>
+                <button onClick={() => this.handleClick()} className="up-quantity">Update</button>
               </div>
             </div>
           </div>
           <div className="container">
             <div className="label">Total:</div>
-            <div className="item-total">${product.total}.00</div>
+            <div className="item-total">${productTotal}.00</div>
           </div>
           <button onClick={() => this.deleteItem(product.id)} className="delete-item">
             Delete
@@ -69,6 +87,12 @@ export default class Cart extends Component {
         </div>
       );
     });
+    var amount = allTotals.reduce((total, val) => {
+      total+val
+    }, 0);
+    console.log(allTotals)
+    console.log(amount)
+    var amountInPennies = amount*100
     return (
       <div>
         <Nav />
@@ -81,9 +105,9 @@ export default class Cart extends Component {
             </div>
             <div className="total-container">
               <div className="total-label">Cart Total:</div>
-              <div className="cart-total">${this.state.amount}.00</div>
+              <div className="cart-total">${amount}.00</div>
             </div>
-            <Checkout amount={+this.state.amount}/>
+            <Checkout amount={+amountInPennies}/>
           </div>
         </div>
       </div>
@@ -92,3 +116,12 @@ export default class Cart extends Component {
 }
 
 
+function mapStateToProps(state) {
+  var {orderId, userId} = state;
+  return{
+    orderId,
+    userId
+  }
+}
+
+export default connect(mapStateToProps, {updateQuantity})(Cart)

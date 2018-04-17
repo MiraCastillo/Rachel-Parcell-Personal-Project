@@ -83,7 +83,9 @@ module.exports = {
         
     },
     cart: (req, res) => {
-        req.app.get("db").getCartItems().then(info => {
+        var {userId, orderId} = req.body
+        console.log(req.body)
+        req.app.get("db").getCartItems(userId, orderId).then(info => {
             res.status(200).send(info)
         })
     },
@@ -105,6 +107,12 @@ module.exports = {
             } else{
                 return res.sendStatus(200)
             }
+        })
+    },
+    newQuantity: (req, res, next) => {
+        var {quantity, orderId, productId} = req.body;
+        req.app.get("db").updateQuantity(orderId, productId, quantity).then(res => {
+            res.status(200).send(res)
         })
     },
     

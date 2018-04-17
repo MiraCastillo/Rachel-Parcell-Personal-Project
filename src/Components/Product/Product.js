@@ -38,7 +38,13 @@ class Product extends Component{
                 showConfirmButton: false,
                 timer: 1500
             })
-        })
+        }).catch(err => {
+            swal({
+              type: 'error',
+              title: 'Oops...',
+              text: 'You need to be signed in to add this to your cart!',
+            })
+          });
     }
 
     render(){
