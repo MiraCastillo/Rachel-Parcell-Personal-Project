@@ -19,10 +19,10 @@ class Cart extends Component {
     };
   }
 
-  handleClick(){
+  handleClick(id){
     this.props.updateQuantity(this.state.quantity)
-    axios.post("/api/newQuantity", {quantity: this.state.quantity, orderId: this.props.orderId
-      // , productId:
+    axios.post("/api/newQuantity", {quantity: this.state.quantity, orderId: this.props.orderId, productId: id}).then(resp => {
+      this.displayItems()
     })
   }
 
@@ -31,11 +31,14 @@ class Cart extends Component {
   }
 
   deleteItem(id) {
-    axios.delete("/api/deleteItem", id);
-  }
+    axios.delete(`/api/deleteItem/${id}`).then(res => {
+      console.log(res)
+      this.setState({information:res.data})
+  })
+}
 
-  componentDidMount() {
-    axios.post("/api/getCart", {userId: this.props.userId, orderId: this.props.orderId}).then(info => {
+displayItems(){
+  axios.post("/api/getCart", {userId: this.props.userId, orderId: this.props.orderId}).then(info => {
       this.setState({ information: info.data });
     }).catch(err => {
       swal({
@@ -46,9 +49,15 @@ class Cart extends Component {
     });
   }
 
+  componentDidMount() {
+    console.log(this.props.orderId)
+    this.displayItems()
+  }
+
   render() {
     var allTotals = []
     var cartInfo = this.state.information.map(product => {
+      if(product) {
       var productTotal = product.price * product.quantity
       allTotals.push(productTotal)
       this.state.prices.push(product.price);
@@ -73,7 +82,7 @@ class Cart extends Component {
               <div className="label">Update Quantity:</div>
               <div className="update-input-and-button">
                 <input onChange={(e)=>this.handleNewQuantity(e.target.value)}className="update-quantity" placeholder="#" />
-                <button onClick={() => this.handleClick()} className="up-quantity">Update</button>
+                <button key={product.id} onClick={() => this.handleClick(product.id)} className="up-quantity" >Update</button>
               </div>
             </div>
           </div>
@@ -81,11 +90,16 @@ class Cart extends Component {
             <div className="label">Total:</div>
             <div className="item-total">${productTotal}.00</div>
           </div>
-          <button onClick={() => this.deleteItem(product.id)} className="delete-item">
+          <button onClick={() => this.deleteItem(product.id)}>
             Delete
           </button>
         </div>
       );
+    } else {
+      return(
+        <div>Your cart is empty!</div>
+      )
+    }
     });
     var amount = allTotals.reduce((total, val) => {
       return total+val
@@ -104,7 +118,7 @@ class Cart extends Component {
             </div>
             <div className="total-container">
               <div className="total-label">Cart Total:</div>
-              <div className="cart-total">${amount}.00</div>
+              <div className="cart-total">${amount.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")}.00</div>
             </div>
             <Checkout amount={+amountInPennies}/>
           </div>

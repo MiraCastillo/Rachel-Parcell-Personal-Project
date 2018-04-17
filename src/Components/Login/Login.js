@@ -16,10 +16,12 @@ class Login extends Component {
   }
 
   handleUsername(e) {
+    console.log(e)
     this.setState({ username: e });
   }
 
   handlePassword(e) {
+    console.log(e)
     this.setState({ password: e });
   }
 
@@ -30,22 +32,25 @@ class Login extends Component {
         password: this.state.password
       })
       .then(user => {
-        // this.setState({password: ""})
         if (user.data[0]) {
           this.props.history.push("/");
           axios.post("/api/allUserInfo", {username: this.state.username, password: this.state.password}).then(res => {
-            console.log("I'm running", res)
-            var {username, name, total, quantity} = res.data[0];
-            var {loggedIn, orderid, id} = res.data[1]
+            console.log("I'm running", res);
             var {updateUserId, updateUsername, updateUserName, updateOrderId, updateProducts, updateTotal, updateLoggedInStatus, updateQuantity} = this.props;
+            if(res.data[2][0]){
+              var {total, quantity} = res.data[2][0];
+              updateTotal(total);
+              updateQuantity(quantity);
+              updateProducts(res.data[2]);
+            }
+            var {username, name} = res.data[0]
+            var {loggedIn, orderId, id} = res.data[1]
+            
             updateUserId(id);
             updateUsername(username);
             updateUserName(name);
-            updateOrderId(orderid);
-            updateProducts();
-            updateTotal(total);
+            updateOrderId(orderId);
             updateLoggedInStatus(loggedIn);
-            updateQuantity(quantity);
           })
         } else {
           swal({

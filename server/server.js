@@ -23,13 +23,9 @@ massive(URI).then(db => {
 
 var checkForSession = (req, res, next)=>{
     console.log('middleware')
-    if(req.session.user){
-        next();
-    } else {
         console.log("hit")
-        req.session.user = {id:0, loggedIn:false, orderid:0}
+        req.session.user = {id:0, loggedIn:false, orderId:0}
         next()
-    }
 };
 
 app.get("/api/allProducts", c.read)
@@ -53,9 +49,8 @@ var checkingForUser = (req, res, next) => {
 app.use(checkingForUser)
 
 app.post("/api/addToCart/:id", c.addToCart)
-app.get("/api/check", c.checking)
 app.post("/api/getCart", c.cart)
-app.delete("/api/deleteItem", c.delete)
+app.delete("/api/deleteItem/:id", c.delete)
 app.post("/api/payment", c.payment)
 app.post("/api/newQuantity", c.newQuantity)
 app.post("/api/updateTotal", c.updateTotal)

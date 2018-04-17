@@ -11,20 +11,19 @@ module.exports = {
         var {username, password} = req.body
         req.app.get("db").checkForUser([username, password]).then(user => {
             console.log("checking")
-            
             if(user[0]){
                 req.session.user.id = user[0].id;
                 req.session.user.loggedIn = true;
                 req.app.get("db").checkingForOrder([user[0].id]).then(orderInfo => {
                     if(orderInfo[0]){
                         if(orderInfo[0].status === true){
-                            console.log("active order")
-                            req.session.user.orderid = orderInfo[0].id
+                            console.log("active order", orderInfo[0].id)
+                            req.session.user.orderId = orderInfo[0].id
                         } 
                         else {
                             console.log("non-active order", user[0].id)
                             req.app.get("db").createNewOrder([user[0].id]).then(info => {
-                                req.session.user.orderid = info.id
+                                req.session.user.orderId = info.id
                             })
                         }
                     }
@@ -37,7 +36,10 @@ module.exports = {
     allInfo: (req, res, next) => {
         var{username, password} = req.body
         req.app.get("db").getAll([username, password]).then(info => {
-            res.status(200).send([info, req.session.user])
+            req.app.get("db").getUser([username, password]).then(inf => {
+                res.status(200).send([inf, req.session.user, info])
+            })
+            
         })
     },
     newUser: (req, res) =>{
@@ -79,19 +81,22 @@ module.exports = {
             res.sendStatus(200)
         })
     },
-    checking: (req, res) => {
-        
-    },
     cart: (req, res) => {
-        var {userId, orderId} = req.body
+        var {orderId} = req.session.user
+        var {userId} = req.body
         console.log(req.body)
         req.app.get("db").getCartItems(userId, orderId).then(info => {
             res.status(200).send(info)
         })
     },
     delete: (req, res) => {
-        req.app.get("db").deleteFromCart([req.session.orderid, req.params.id]).then(res => {
-            res.sendStatus(200)
+        var {id} = req.params
+        var {orderId, id:userId} = req.session.user
+        console.log(id, orderId)
+        req.app.get("db").deleteFromCart([orderId, id]).then(rest => {
+            req.app.get("db").getCartItems([userId, orderId]).then(info => {
+                res.status(200).send(info)
+            })
         })
     },
     payment: (req, res, next) => {
@@ -111,14 +116,17 @@ module.exports = {
     },
     newQuantity: (req, res, next) => {
         var {quantity, orderId, productId} = req.body;
-        req.app.get("db").updateQuantity(orderId, productId, quantity).then(res => {
-            res.status(200).send(res)
+        var {id} = req.session.user
+        req.app.get("db").updateQuantity(orderId, productId, +quantity).then(rest => {
+            req.app.get("db").getCartItems([id, orderId]).then(info => {
+                res.status(200).send(info)
+            })
         })
     },
     updateTotal: (req, res) => {
         var {total} = req.body.total;
         var {userId} = req.session.user.id
-        console.log(req.body, req.session.user.id)
+        console.log(req.body.total, req.session.user.id)
         req.app.get("db").updateCartTotal(total, userId).then(rest => {
             res.sendStatus(200)
         })
