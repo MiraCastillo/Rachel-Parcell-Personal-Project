@@ -44,7 +44,7 @@ app.get("/api/product/:id", c.item)
 
 var checkingForUser = (req, res, next) => {
     console.log("I'm checking if you're logged in")
-    if(req.session.user.loggedIn = true){
+    if(req.session.user.loggedIn === true){
         next();
     } else{
         res.sendStatus(401);
@@ -56,7 +56,6 @@ app.post("/api/addToCart/:id", c.addToCart)
 app.get("/api/check", c.checking)
 app.get("/api/getCart", c.cart)
 app.delete("/api/deleteItem", c.delete)
-
 app.post("/api/payment", c.payment)
 
 

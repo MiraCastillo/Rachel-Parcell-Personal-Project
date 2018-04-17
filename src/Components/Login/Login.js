@@ -35,10 +35,10 @@ class Login extends Component {
           this.props.history.push("/");
           axios.post("/api/allUserInfo", {username: this.state.username, password: this.state.password}).then(res => {
             console.log("I'm running", res)
-            var {userid, username, name, total, quantity} = res.data[0];
-            var {loggedIn, orderid} = res.data[1]
+            var {username, name, total, quantity} = res.data[0];
+            var {loggedIn, orderid, id} = res.data[1]
             var {updateUserId, updateUsername, updateUserName, updateOrderId, updateProducts, updateTotal, updateLoggedInStatus, updateQuantity} = this.props;
-            updateUserId(userid);
+            updateUserId(id);
             updateUsername(username);
             updateUserName(name);
             updateOrderId(orderid);

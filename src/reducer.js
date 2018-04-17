@@ -40,6 +40,7 @@ export function updateUserName(name){
 const UPDATE_ORDERID = "UPDATE_ORDERID";
 
 export function updateOrderId(orderId) {
+    console.log(orderId)
     return{
         type: UPDATE_ORDERID,
         payload: orderId

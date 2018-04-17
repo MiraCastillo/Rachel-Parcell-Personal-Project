@@ -2,10 +2,12 @@ import React, {Component} from "react";
 import Nav from "./../Nav/Nav"
 import axios from "axios"
 import swal from "sweetalert2";
-import "./Product.css"
+import "./Product.css";
+import {updateQuantity} from "./../../reducer";
+import {connect} from "react-redux";
 
 
-export default class Product extends Component{
+class Product extends Component{
     constructor(){
         super();
         this.state= {
@@ -16,10 +18,10 @@ export default class Product extends Component{
     }
 
     componentDidMount(){
-        axios.get("/api/check")
         axios.get(`/api/product/${this.props.match.params.id}`).then(item => {
             this.setState({product: item.data})
         })
+        console.log(this.props)
     } 
 
     handleQuantity(e) {
@@ -27,7 +29,8 @@ export default class Product extends Component{
     }
 
     addToCart(id) {
-        axios.post(`/api/addToCart/${id}`, {productId: this.state.product, cartId: "", quantity: this.props.quantity}).then(res => {
+        this.props.updateQuantity(this.state.quantity)
+        axios.post(`/api/addToCart/${id}`, {orderId: this.props.orderId, quantity: this.state.quantity}).then(res => {
             swal({
                 position: "top-end",
                 type: "success",
@@ -65,3 +68,12 @@ export default class Product extends Component{
         )
     }
 }
+
+function mapStateToProps(state) {
+    const {orderId} = state
+    return{
+        orderId
+    }
+}
+
+export default connect(mapStateToProps, {updateQuantity})(Product)

@@ -28,7 +28,7 @@ module.exports = {
                             })
                         }
                     }
-                    res.status(200).send([user, req.session.user])
+                    res.status(200).send(user)
                 })
             }
             
@@ -72,8 +72,10 @@ module.exports = {
         })
     },
     addToCart: (req, res) => {
-        var {quantity, cartId, productId} = req.params
-        req.app.get("db").addToCart([productId, cartId, quantity]).then(res => {
+        var {id} = req.params;
+        console.log(req.params, req.body)
+        var {orderId, quantity} = req.body
+        req.app.get("db").addToCart([id, orderId, quantity]).then(rest => {
             res.sendStatus(200)
         })
     },
