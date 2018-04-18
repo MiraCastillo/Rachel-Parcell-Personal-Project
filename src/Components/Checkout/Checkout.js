@@ -1,12 +1,16 @@
 import React, {Component} from "react";
 import axios from "axios";
 import StripeCheckout from "react-stripe-checkout";
+import {connect} from "react-redux";
+import {updateProductsToDisplay} from "./../../reducer"
 
-export default class Checkout extends Component{
+class Checkout extends Component{
   onToken = (token) => {
     token.card = void 0
     axios.post('/api/payment', {token, amount: this.props.amount}).then(res => {
       console.log("We did it!")
+      this.props.updateProductsToDisplay([])
+      this.props.updateCart()
     })
   }
 
@@ -24,3 +28,13 @@ export default class Checkout extends Component{
     )
   }
 }
+
+function mapStateToProps(state) {
+
+  return{
+
+  }
+}
+
+
+export default connect(mapStateToProps, {updateProductsToDisplay})(Checkout)

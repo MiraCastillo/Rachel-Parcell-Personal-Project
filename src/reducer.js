@@ -6,7 +6,17 @@ var initialState = {
     products : [],
     total: 0,
     loggedIn: false,
-    quantity: 0,    
+    quantity: 0,  
+    productsToDisplay: []
+}
+
+const UPDATE_PRODUCTS_TO_DISPLAY = "UPDATE_PRODUCTS_TO_DISPLAY";
+
+export function updateProductsToDisplay(arr){
+    return{
+        type: UPDATE_PRODUCTS_TO_DISPLAY,
+        payload: arr
+    }
 }
 
 const UPDATE_USERID = "UPDATE_USERID";
@@ -87,6 +97,8 @@ export function updateQuantity(num) {
 
 export default function reducer(state = initialState, action) {
     switch(action.type) {
+        case UPDATE_PRODUCTS_TO_DISPLAY:
+            return Object.assign({}, state, {productsToDisplay: action.payload})
         case UPDATE_TOTAL:
             return Object.assign({}, state, {total: action.payload});
         case UPDATE_USERID:

@@ -10,15 +10,22 @@ module.exports = {
     check: (req, res) => {
         var {username, password} = req.body
         req.app.get("db").checkForUser([username, password]).then(user => {
-            console.log("checking")
+            console.log("checking", user[0].id)
             if(user[0]){
                 req.session.user.id = user[0].id;
                 req.session.user.loggedIn = true;
                 req.app.get("db").checkingForOrder([user[0].id]).then(orderInfo => {
                     if(orderInfo[0]){
-                        if(orderInfo[0].status === true){
-                            console.log("active order", orderInfo[0].id)
-                            req.session.user.orderId = orderInfo[0].id
+                        var active = orderInfo.filter(cart =>{
+                            if(cart.status === true){
+                                return true;
+                            } else{
+                                return false;
+                            }
+                        })
+                        if(active[0]){
+                            console.log("active order", active[0].id)
+                            req.session.user.orderId = active[0].id
                         } 
                         else {
                             console.log("non-active order", user[0].id)
@@ -105,13 +112,40 @@ module.exports = {
             currency: "usd",
             source: req.body.token.id,
             description: "Test charge from Rachel Parcell"
-        }, function(err, charge) {
-            if(err) {
-                console.log(err)
-                res.sendStatus(500)
-            } else{
-                return res.sendStatus(200)
-            }
+        }
+        // , function(err, charge) {
+        //     if(err) {
+        //         res.sendStatus(500)
+        //     } else{
+        //         return res.sendStatus(200)
+        //     }
+        // }
+    )
+        req.app.get("db").changeStatus([req.session.user.orderId, req.session.user.id]).then(resp => {
+            var{id} = req.session.user
+            req.app.get("db").checkingForOrder(id).then(orderInfo => {
+                if(orderInfo[0]){
+                    var active = orderInfo.filter(cart =>{
+                        if(cart.status === true){
+                            return true;
+                        } else{
+                            return false;
+                        }
+                    })
+                    if(active[0]){
+                        console.log("active order", active[0].id)
+                        req.session.user.orderId = active[0].id
+                    } 
+                    else {
+                        var {id} = req.session.user
+                        console.log("non-active order", id)
+                        req.app.get("db").createNewOrder(id).then(info => {
+                            req.session.user.orderId = info.id
+                        })
+                    }
+                }
+                res.status(200).send(resp)
+            })
         })
     },
     newQuantity: (req, res, next) => {

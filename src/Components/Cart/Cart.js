@@ -17,7 +17,9 @@ class Cart extends Component {
       prices: [],
       quantity: 0
     };
+    this.displayItems = this.displayItems.bind(this)
   }
+
 
   handleClick(id){
     this.props.updateQuantity(this.state.quantity)
@@ -47,6 +49,10 @@ displayItems(){
         text: 'You need to be signed in to view this page!',
       })
     });
+  }
+
+  componentWillReceiveProps(props) {
+    console.log(props)
   }
 
   componentDidMount() {
@@ -120,7 +126,7 @@ displayItems(){
               <div className="total-label">Cart Total:</div>
               <div className="cart-total">${amount.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")}.00</div>
             </div>
-            <Checkout amount={+amountInPennies}/>
+            <Checkout updateCart={this.displayItems} amount={+amountInPennies}/>
           </div>
         </div>
       </div>
@@ -130,10 +136,11 @@ displayItems(){
 
 
 function mapStateToProps(state) {
-  var {orderId, userId} = state;
+  var {orderId, userId, productsToDisplay} = state;
   return{
     orderId,
-    userId
+    userId,
+    productsToDisplay
   }
 }
 
