@@ -2,14 +2,15 @@ import React, {Component} from "react";
 import axios from "axios";
 import StripeCheckout from "react-stripe-checkout";
 import {connect} from "react-redux";
-import {updateProductsToDisplay} from "./../../reducer"
+import {updateProductsToDisplay, updateOrderId} from "./../../reducer"
 
 class Checkout extends Component{
   onToken = (token) => {
     token.card = void 0
     axios.post('/api/payment', {token, amount: this.props.amount}).then(res => {
-      console.log("We did it!")
-      this.props.updateProductsToDisplay([])
+      console.log("We did it!", res)
+      this.props.updateOrderId(res.data[0].id)
+      this.props.updateProductsToDisplay(res.data[1])
       this.props.updateCart()
     })
   }
@@ -37,4 +38,4 @@ function mapStateToProps(state) {
 }
 
 
-export default connect(mapStateToProps, {updateProductsToDisplay})(Checkout)
+export default connect(mapStateToProps, {updateProductsToDisplay, updateOrderId})(Checkout)

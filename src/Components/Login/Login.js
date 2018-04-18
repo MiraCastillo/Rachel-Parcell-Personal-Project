@@ -42,6 +42,7 @@ class Login extends Component {
               updateTotal(total);
               updateQuantity(quantity);
               updateProducts(res.data[2]);
+              console.log(res.data[2])
             }
             var {username, name} = res.data[0]
             var {loggedIn, orderId, id} = res.data[1]
@@ -72,7 +73,7 @@ class Login extends Component {
             onChange={e => this.handleUsername(e.target.value)}
             placeholder="Username"
           />
-          <input className="i-l"
+          <input type="password" className="i-l"
             onChange={e => this.handlePassword(e.target.value)}
             placeholder="Password"
           />

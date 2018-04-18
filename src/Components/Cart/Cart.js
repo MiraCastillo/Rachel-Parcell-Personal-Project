@@ -5,7 +5,7 @@ import "./Cart.css";
 import {Link} from "react-router-dom";
 import Checkout from "./../Checkout/Checkout";
 import {connect} from "react-redux";
-import {updateQuantity} from "./../../reducer";
+import {updateQuantity, updateProductsToDisplay} from "./../../reducer";
 import swal from "sweetalert2";
 
 class Cart extends Component {
@@ -41,6 +41,7 @@ class Cart extends Component {
 
 displayItems(){
   axios.post("/api/getCart", {userId: this.props.userId, orderId: this.props.orderId}).then(info => {
+    this.props.updateProductsToDisplay(info.data)
       this.setState({ information: info.data });
     }).catch(err => {
       swal({
@@ -62,7 +63,7 @@ displayItems(){
 
   render() {
     var allTotals = []
-    var cartInfo = this.state.information.map(product => {
+    var cartInfo = this.props.productsToDisplay.map(product => {
       if(product) {
       var productTotal = product.price * product.quantity
       allTotals.push(productTotal)
@@ -144,4 +145,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, {updateQuantity})(Cart)
+export default connect(mapStateToProps, {updateQuantity, updateProductsToDisplay})(Cart)
