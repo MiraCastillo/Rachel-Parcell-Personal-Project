@@ -33,6 +33,7 @@ class Login extends Component {
       })
       .then(user => {
         if (user.data[0]) {
+          console.log(user.data[0])
           this.props.history.push("/");
           axios.post("/api/allUserInfo", {username: this.state.username, password: this.state.password}).then(res => {
             console.log("I'm running", res);
@@ -42,11 +43,12 @@ class Login extends Component {
               updateTotal(total);
               updateQuantity(quantity);
               updateProducts(res.data[2]);
-              console.log(res.data[2])
+              // console.log(res.data[2])
             }
             var {username, name} = res.data[0]
+            console.log(res.data[0])
             var {loggedIn, orderId, id} = res.data[1]
-            
+            console.log(res.data[1])
             updateUserId(id);
             updateUsername(username);
             updateUserName(name);

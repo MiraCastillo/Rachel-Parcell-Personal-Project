@@ -35,7 +35,7 @@ class Cart extends Component {
   deleteItem(id) {
     axios.delete(`/api/deleteItem/${id}`).then(res => {
       console.log(res)
-      this.setState({information:res.data})
+      this.props.updateProductsToDisplay(res.data)
   })
 }
 
@@ -70,11 +70,11 @@ displayItems(){
       this.state.prices.push(product.price);
       return (
         <div className="cart-item">
-          <Link to={`/product/${product.id}`} >
-            <div className="cart-name">{product.name}</div>
+          <Link to={`/product/${product.id}`} className="cart-name" >
+            <div>{product.name}</div>
           </Link>
-          <Link to={`/product/${product.id}`} >         
-            <img className="cart-picture" src={product.picture} />
+          <Link to={`/product/${product.id}`} className="cart-picture" >         
+            <img src={product.picture}  className="cart-picture" />
             </Link>
           <div className="container">
             <div className="label">Price:</div>
@@ -97,7 +97,7 @@ displayItems(){
             <div className="label">Total:</div>
             <div className="item-total">${productTotal}.00</div>
           </div>
-          <button onClick={() => this.deleteItem(product.id)}>
+          <button className="deleteItem" onClick={() => this.deleteItem(product.id)}>
             Delete
           </button>
         </div>
@@ -114,15 +114,15 @@ displayItems(){
     axios.post("/api/updateTotal", {total: amount})
     var amountInPennies = amount*100
     return (
-      <div>
+      <div className="allTheThings">
         <Nav />
         <div className="cart">
           <div className="cart-items">{cartInfo}</div>
           <div className="cart-checkout">
-            <div className="total-container">
-              {/* <div className="total-label">Tax:</div>
-              <div className="cart-tax">$.00</div> */}
-            </div>
+            {/* <div className="total-container">
+              <div className="total-label">Tax:</div>
+              <div className="cart-tax">$.00</div>
+            </div> */}
             <div className="total-container">
               <div className="total-label">Cart Total:</div>
               <div className="cart-total">${amount.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")}.00</div>

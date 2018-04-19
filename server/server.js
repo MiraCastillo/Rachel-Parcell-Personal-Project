@@ -31,22 +31,22 @@ var checkForSession = (req, res, next)=>{
 app.get("/api/allProducts", c.read)
 app.post("/api/loginUser", checkForSession, c.check)
 app.post("/api/allUserInfo", c.allInfo)
-app.post("/api/newUser", c.newUser)
+app.post("/api/newUser", checkForSession, c.newUser)
 app.get("/api/getDresses", c.dresses)
 app.get("/api/getTops", c.tops)
 app.get("/api/getSkirts", c.skirts)
 app.get("/api/getSpring", c.spring)
 app.get("/api/product/:id", c.item)
 
-var checkingForUser = (req, res, next) => {
-    console.log("I'm checking if you're logged in")
-    if(req.session.user.loggedIn === true){
-        next();
-    } else{
-        res.sendStatus(401);
-    }
-}
-app.use(checkingForUser)
+// var checkingForUser = (req, res, next) => {
+//     console.log("I'm checking if you're logged in")
+//     if(req.session.user.loggedIn === true){
+//         next();
+//     } else{
+//         res.sendStatus(401);
+//     }
+// }
+// app.use(checkingForUser)
 
 app.post("/api/addToCart/:id", c.addToCart)
 app.post("/api/getCart", c.cart)

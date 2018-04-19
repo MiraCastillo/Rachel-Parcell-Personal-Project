@@ -8,8 +8,8 @@ class Checkout extends Component{
   onToken = (token) => {
     token.card = void 0
     axios.post('/api/payment', {token, amount: this.props.amount}).then(res => {
-      console.log("We did it!", res)
-      this.props.updateOrderId(res.data[0].id)
+      console.log("We did it!", res.data[0].orderId)
+      this.props.updateOrderId(res.data[0].orderId)
       this.props.updateProductsToDisplay(res.data[1])
       this.props.updateCart()
     })

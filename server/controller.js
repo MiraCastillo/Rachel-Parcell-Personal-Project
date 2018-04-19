@@ -16,8 +16,9 @@ module.exports = {
       .get("db")
       .checkForUser([username, password])
       .then(user => {
-        console.log("checking", user[0].id);
+        console.log(user[0]);
         if (user[0]) {
+          console.log("checking", user[0].id);
           req.session.user.id = user[0].id;
           req.session.user.loggedIn = true;
           req.app
@@ -25,28 +26,22 @@ module.exports = {
             .checkingForOrder([user[0].id])
             .then(orderInfo => {
               if (orderInfo[0]) {
-                var active = orderInfo.filter(cart => {
-                  if (cart.status === true) {
-                    return true;
-                  } else {
-                    return false;
-                  }
-                });
-                if (active[0]) {
-                  console.log("active order", active[0].id);
-                  req.session.user.orderId = active[0].id;
-                } else {
-                  console.log("non-active order", user[0].id);
-                  req.app
-                    .get("db")
-                    .createNewOrder([user[0].id])
-                    .then(info => {
-                      req.session.user.orderId = info.id;
-                    });
-                }
+                console.log("active order", orderInfo[0].id);
+                req.session.user.orderId = orderInfo[0].id;
+                console.log(req.session.user.orderId);
+              } else {
+                console.log("non-active order", user[0].id);
+                req.app
+                  .get("db")
+                  .createNewOrder([user[0].id])
+                  .then(info => {
+                    req.session.user.orderId = info.id;
+                  });
               }
               res.status(200).send(user);
             });
+        } else {
+          res.status(200).send(user);
         }
       });
   },
@@ -68,9 +63,29 @@ module.exports = {
     var { name, username, password } = req.body;
     req.app
       .get("db")
-      .createNewUser([username, password, name])
-      .then(user => {
-        res.status(200).send(user);
+      .checkForUser([username, password])
+      .then(result => {
+        if (result[0]) {
+          res.status(200).send(result);
+        } else {
+          req.app
+            .get("db")
+            .createNewUser([username, password, name])
+            .then(user => {
+              console.log(user[0].id);
+              req.session.user.id = user[0].id;
+              req.session.user.loggedIn = true;
+              console.log("non-active order", user[0].id);
+              req.app
+                .get("db")
+                .createNewOrder([user[0].id])
+                .then(info => {
+                  req.session.user.orderId = info[0].id;
+                  console.log(req.session.user);
+                  res.status(200).send(req.session.user);
+                });
+            });
+        }
       });
   },
   dresses: (req, res) => {
@@ -115,8 +130,9 @@ module.exports = {
   },
   addToCart: (req, res) => {
     var { id } = req.params;
-    console.log(req.params, req.body);
-    var { orderId, quantity } = req.body;
+    var { orderId } = req.session.user;
+    console.log(req.params, req.session.user.orderId, req.body);
+    var { quantity } = req.body;
     req.app
       .get("db")
       .addToCart([id, orderId, quantity])
@@ -179,15 +195,18 @@ module.exports = {
           .then(info => {
             //   console.log(info[0].id, info[0], info)
             req.session.user.orderId = info[0].id;
-            req.app.get("db").getCartItems([id, req.session.user.orderId]).then( cart =>{
-                res.status(200).send([req.session.user, cart])
-            })
+            req.app
+              .get("db")
+              .getCartItems([id, req.session.user.orderId])
+              .then(cart => {
+                res.status(200).send([req.session.user, cart]);
+              });
           });
       });
   },
   newQuantity: (req, res, next) => {
-    var { quantity, orderId, productId } = req.body;
-    var { id } = req.session.user;
+    var { quantity, productId } = req.body;
+    var { id, orderId } = req.session.user;
     req.app
       .get("db")
       .updateQuantity(orderId, productId, +quantity)
@@ -201,12 +220,12 @@ module.exports = {
       });
   },
   updateTotal: (req, res) => {
-    var { total } = req.body.total;
-    var { userId } = req.session.user.id;
+    var { total } = req.body;
+    var { id } = req.session.user;
     console.log(req.body.total, req.session.user.id);
     req.app
       .get("db")
-      .updateCartTotal(total, userId)
+      .updateCartTotal(total, id)
       .then(rest => {
         res.sendStatus(200);
       });
