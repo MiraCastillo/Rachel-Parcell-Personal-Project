@@ -48,9 +48,9 @@ class Product extends Component{
     }
 
     render(){
-        var specificInfo = this.state.product.map(product => {
+        var specificInfo = this.state.product.map((product, i) => {
             return(
-                <div className="the-product-container">
+                <div className="the-product-container" key={i}>
                     <img src={product.picture} className="single-picture"/>
                     <div className="single-info">
                     <div className="single-name">{product.name}</div>

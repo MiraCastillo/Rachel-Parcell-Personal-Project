@@ -1,5 +1,7 @@
 require("dotenv").config();
 var stripe = require("stripe")(process.env.S_STRIPE_KEY);
+// var bcrypt = require("bcrypt");
+// const saltRounds
 
 module.exports = {
   read: (req, res) => {
@@ -46,6 +48,7 @@ module.exports = {
       });
   },
   allInfo: (req, res, next) => {
+    var hashedPassword = passwordHash.generate(req.body.password)
     var { username, password } = req.body;
     req.app
       .get("db")
