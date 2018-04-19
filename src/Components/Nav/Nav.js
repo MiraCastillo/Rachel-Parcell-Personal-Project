@@ -20,18 +20,18 @@ class Nav extends Component {
     return (
       <div className="nav-bar">
         <div className="login">
-          <a href="http://localhost:3000/#/login">{areYouLoggedIn}</a>
+          <a href={process.env.REACT_APP_LOGIN}>{areYouLoggedIn}</a>
         </div>
-        <a href="http://localhost:3000/#/">
+        <Link to="/">
           <div className="brand">
             <div className="rachel">RACHEL PARCELL</div>
             <div className="collection">collection</div>
           </div>
-        </a>
+        </Link>
         <div className="cart-container">
-          <a href="http://localhost:3000/#/cart" className="cart-word">
+          <Link to="/cart" className="cart-word">
             Cart
-          </a>
+          </Link>
         </div>
       </div>
     );

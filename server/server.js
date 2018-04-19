@@ -4,8 +4,10 @@ var massive = require("massive");
 var session = require("express-session");
 var c = require("./controller");
 
+
 require("dotenv").config();
 var app = express();
+app.use(express.static(( `${__dirname}/../build` )))
 app.use(bodyParser.json())
 
 var {SERVER_PORT, URI, SESSION_SECRET, } = process.env
