@@ -83,7 +83,7 @@ class SignUp extends Component {
             onChange={e => this.handleNewUser(e.target.value)}
             placeholder="Username"
           />
-          <input className="i-su"
+          <input type="password" className="i-su"
             onChange={e => this.handleNewPass(e.target.value)}
             placeholder="Password"
           />
