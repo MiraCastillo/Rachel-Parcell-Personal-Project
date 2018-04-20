@@ -1,7 +1,6 @@
 require("dotenv").config();
 var stripe = require("stripe")(process.env.S_STRIPE_KEY);
-// var bcrypt = require("bcrypt");
-// const saltRounds
+var bcrypt = require("bcryptjs");
 
 module.exports = {
   read: (req, res) => {
@@ -14,80 +13,91 @@ module.exports = {
   },
   check: (req, res) => {
     var { username, password } = req.body;
-    req.app
-      .get("db")
-      .checkForUser([username, password])
-      .then(user => {
-        console.log(user[0]);
-        if (user[0]) {
-          console.log("checking", user[0].id);
-          req.session.user.id = user[0].id;
-          req.session.user.loggedIn = true;
-          req.app
-            .get("db")
-            .checkingForOrder([user[0].id])
-            .then(orderInfo => {
-              if (orderInfo[0]) {
-                console.log("active order", orderInfo[0].id);
-                req.session.user.orderId = orderInfo[0].id;
-                console.log(req.session.user.orderId);
-              } else {
-                console.log("non-active order", user[0].id);
-                req.app
-                  .get("db")
-                  .createNewOrder([user[0].id])
-                  .then(info => {
-                    req.session.user.orderId = info.id;
-                  });
-              }
-              res.status(200).send(user);
-            });
-        } else {
-          res.status(200).send(user);
-        }
-      });
-  },
-  allInfo: (req, res, next) => {
-    var hashedPassword = passwordHash.generate(req.body.password)
-    var { username, password } = req.body;
-    req.app
-      .get("db")
-      .getAll([username, password])
-      .then(info => {
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(password, salt, (err, hash) => {
         req.app
           .get("db")
-          .getUser([username, password])
-          .then(inf => {
-            res.status(200).send([inf, req.session.user, info]);
+          .checkForUser([username, hash])
+          .then(user => {
+            console.log(user[0]);
+            if (user[0]) {
+              console.log("checking", user[0].id);
+              req.session.user.id = user[0].id;
+              req.session.user.loggedIn = true;
+              req.app
+                .get("db")
+                .checkingForOrder([user[0].id])
+                .then(orderInfo => {
+                  if (orderInfo[0]) {
+                    console.log("active order", orderInfo[0].id);
+                    req.session.user.orderId = orderInfo[0].id;
+                    console.log(req.session.user.orderId);
+                  } else {
+                    console.log("non-active order", user[0].id);
+                    req.app
+                      .get("db")
+                      .createNewOrder([user[0].id])
+                      .then(info => {
+                        req.session.user.orderId = info.id;
+                      });
+                  }
+                  res.status(200).send(user);
+                });
+            } else {
+              res.status(204).send(user);
+            }
           });
       });
+    });
+  },
+  allInfo: (req, res, next) => {
+    var { username, password } = req.body;
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(password, salt, (err, hash) => {
+        req.app
+          .get("db")
+          .getAll([username, hash])
+          .then(info => {
+            req.app
+              .get("db")
+              .getUser([username, hash])
+              .then(inf => {
+                res.status(200).send([inf, req.session.user, info]);
+              });
+          });
+      });
+    });
   },
   newUser: (req, res) => {
     var { name, username, password } = req.body;
     req.app
       .get("db")
-      .checkForUser([username, password])
+      .checkForUser(username)
       .then(result => {
         if (result[0]) {
-          res.status(200).send(result);
+          res.status(406).send(result);
         } else {
-          req.app
-            .get("db")
-            .createNewUser([username, password, name])
-            .then(user => {
-              console.log(user[0].id);
-              req.session.user.id = user[0].id;
-              req.session.user.loggedIn = true;
-              console.log("non-active order", user[0].id);
+          bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(password, salt, (err, hash) => {
               req.app
                 .get("db")
-                .createNewOrder([user[0].id])
-                .then(info => {
-                  req.session.user.orderId = info[0].id;
-                  console.log(req.session.user);
-                  res.status(200).send(req.session.user);
+                .createNewUser([username, hash, name])
+                .then(user => {
+                  console.log(user[0].id);
+                  req.session.user.id = user[0].id;
+                  req.session.user.loggedIn = true;
+                  console.log("non-active order", user[0].id);
+                  req.app
+                    .get("db")
+                    .createNewOrder([user[0].id])
+                    .then(info => {
+                      req.session.user.orderId = info[0].id;
+                      console.log(req.session.user);
+                      res.status(200).send(req.session.user);
+                    });
                 });
             });
+          });
         }
       });
   },

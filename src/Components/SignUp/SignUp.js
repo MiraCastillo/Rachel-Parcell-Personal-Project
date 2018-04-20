@@ -36,16 +36,15 @@ class SignUp extends Component {
         password: this.state.password
       })
       .then(user => {
-        if(!user[0]){
+        if(user.status === 406){
           swal({
             type: "error",
             title: "Oops...",
-            text: "Looks like that username password combination is taken. Try another one!",
+            text: "Looks like that username is taken. Try another one!",
             background: '#FDF0F0'
           });
         } else {
         console.log(user)
-        this.props.history.push("/");
         this.props.history.push("/");
           axios.post("/api/allUserInfo", {username: this.state.username, password: this.state.password}).then(res => {
             console.log("I'm running", res);

@@ -39,17 +39,6 @@ app.get("/api/getTops", c.tops)
 app.get("/api/getSkirts", c.skirts)
 app.get("/api/getSpring", c.spring)
 app.get("/api/product/:id", c.item)
-
-// var checkingForUser = (req, res, next) => {
-//     console.log("I'm checking if you're logged in")
-//     if(req.session.user.loggedIn === true){
-//         next();
-//     } else{
-//         res.sendStatus(401);
-//     }
-// }
-// app.use(checkingForUser)
-
 app.post("/api/addToCart/:id", c.addToCart)
 app.post("/api/getCart", c.cart)
 app.delete("/api/deleteItem/:id", c.delete)

@@ -32,7 +32,7 @@ class Login extends Component {
         password: this.state.password
       })
       .then(user => {
-        if (user.data[0]) {
+        if (user.status === 200) {
           console.log(user.data[0])
           this.props.history.push("/");
           axios.post("/api/allUserInfo", {username: this.state.username, password: this.state.password}).then(res => {

@@ -43,17 +43,17 @@ displayItems(){
   axios.post("/api/getCart", {userId: this.props.userId, orderId: this.props.orderId}).then(info => {
     this.props.updateProductsToDisplay(info.data)
       this.setState({ information: info.data });
-    }).catch(err => {
+    })
+  }
+
+  componentWillReceiveProps(props) {
+    if(this.props.orderId === 0){
       swal({
         type: 'error',
         title: 'Oops...',
         text: 'You need to be signed in to view this page!',
       })
-    });
-  }
-
-  componentWillReceiveProps(props) {
-    console.log(props)
+    }
   }
 
   componentDidMount() {
