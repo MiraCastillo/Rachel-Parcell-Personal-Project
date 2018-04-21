@@ -3,6 +3,7 @@ import Nav from "./../Nav/Nav";
 import "./Dresses.css";
 import axios from "axios";
 import {Link} from "react-router-dom";
+import Footer from "./../Footer/Footer";
 
 export default class Dresses extends Component {
   constructor() {
@@ -19,9 +20,9 @@ export default class Dresses extends Component {
   }
 
   render() {
-    const info = this.state.products.map(product => {
+    const info = this.state.products.map((product, i) => {
       return (
-        <Link to={`/product/${product.id}`}
+        <Link to={`/product/${product.id}`} key={i}
         className="product-container">
           <img className="product-image" src={product.picture} />
           <div className="product-name">{product.name}</div>
@@ -33,6 +34,7 @@ export default class Dresses extends Component {
       <div>
         <Nav />
         <div className="all-products">{info}</div>
+        <Footer />
       </div>
     );
   }

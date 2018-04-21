@@ -7,6 +7,8 @@ import Checkout from "./../Checkout/Checkout";
 import {connect} from "react-redux";
 import {updateQuantity, updateProductsToDisplay} from "./../../reducer";
 import swal from "sweetalert2";
+import Footer from "./../Footer/Footer";
+
 
 class Cart extends Component {
   constructor() {
@@ -63,13 +65,13 @@ displayItems(){
 
   render() {
     var allTotals = []
-    var cartInfo = this.props.productsToDisplay.map(product => {
+    var cartInfo = this.props.productsToDisplay.map((product, i) => {
       if(product) {
       var productTotal = product.price * product.quantity
       allTotals.push(productTotal)
       this.state.prices.push(product.price);
       return (
-        <div className="cart-item">
+        <div key={i} className="cart-item">
           <Link to={`/product/${product.id}`} className="cart-name" >
             <div>{product.name}</div>
           </Link>
@@ -130,6 +132,7 @@ displayItems(){
             <Checkout updateCart={this.displayItems} amount={+amountInPennies}/>
           </div>
         </div>
+        <Footer />
       </div>
     );
   }

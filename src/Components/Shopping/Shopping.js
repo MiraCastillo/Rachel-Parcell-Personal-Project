@@ -2,7 +2,8 @@ import React, {Component} from "react";
 import Nav from "./../Nav/Nav";
 import axios from "axios";
 import "./Shopping.css";
-import {Link} from "react-router-dom"
+import {Link} from "react-router-dom";
+import Footer from "./../Footer/Footer";
 
 
 export default class Shopping extends Component{
@@ -20,9 +21,9 @@ export default class Shopping extends Component{
     }
 
     render(){
-        const info = this.state.products.map(product => {
+        const info = this.state.products.map((product, i) => {
             return(
-                <Link to={`/product/${product.id}`} className="product-container">
+                <Link to={`/product/${product.id}`} key={i} className="product-container">
                     <img className="product-image" src={product.picture} />
                     <div className="product-name">{product.name}</div>
                     <div className="product-price">${product.price}.00</div>
@@ -35,6 +36,7 @@ export default class Shopping extends Component{
                 <div className="all-products">
                 {info}
                 </div>
+                <Footer />
             </div>
         )
     }

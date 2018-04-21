@@ -1,0 +1,17 @@
+.footer{
+    background-color: #FDF0F0;
+    height: 65px;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.top-line{
+    height: 20px;
+    width: 100%;
+    border-bottom: 1.5px solid black;
+}
+.bottom-line{
+    height: 5px;
+    width: 100%;
+    border-bottom: 1px solid black;
+}

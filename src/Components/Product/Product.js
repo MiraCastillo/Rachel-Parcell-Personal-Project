@@ -5,6 +5,8 @@ import swal from "sweetalert2";
 import "./Product.css";
 import { updateQuantity } from "./../../reducer";
 import { connect } from "react-redux";
+import Footer from "./../Footer/Footer";
+
 
 class Product extends Component {
   constructor() {
@@ -85,6 +87,7 @@ class Product extends Component {
       <div className="whole-page">
         <Nav />
         {specificInfo}
+        <Footer />
       </div>
     );
   }

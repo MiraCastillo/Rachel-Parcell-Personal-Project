@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Nav from "./../Nav/Nav";
 import { Link } from "react-router-dom";
 import "./Home.css";
+import Footer from "./../Footer/Footer";
 
 export default class Home extends Component {
   constructor() {
@@ -11,6 +12,7 @@ export default class Home extends Component {
 
   render() {
     return (
+      <div>
       <div className="home-page">
         <Nav />
         <div className="bar">
@@ -37,6 +39,8 @@ export default class Home extends Component {
         <Link to="/spring" className="spring">
             <div className="shop-the-season">Shop the season! </div>
         </Link>
+      </div>
+        <Footer />
       </div>
     );
   }
