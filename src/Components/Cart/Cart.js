@@ -132,7 +132,7 @@ displayItems(){
             <Checkout updateCart={this.displayItems} amount={+amountInPennies}/>
           </div>
         </div>
-        {/* <Footer /> */}
+        <Footer />
       </div>
     );
   }

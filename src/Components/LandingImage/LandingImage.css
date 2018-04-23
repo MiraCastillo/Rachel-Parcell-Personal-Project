@@ -1,0 +1,30 @@
+.landing{
+    background-image: url(https://cdn.wallpapersafari.com/94/83/9OMDdj.jpg);
+    background-repeat: repeat-y;
+    background-size: 100%;
+    margin-bottom: 20px;
+    height: 77vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+}
+
+.rachelL, .collectionL{
+    margin-left: 20px;
+}
+
+.rachelL{
+    color: #FDF0F0;
+    text-shadow: 2px 2px black;    
+    font-family: 'Vidaloka', serif;
+    font-size: 681%;
+}
+
+.collectionL{
+    font-family: 'Parisienne', cursive;
+    text-shadow: 2px 2px black;    
+    color: #FDF0F0;
+    font-size: 500%;
+}

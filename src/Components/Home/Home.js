@@ -3,6 +3,7 @@ import Nav from "./../Nav/Nav";
 import { Link } from "react-router-dom";
 import "./Home.css";
 import Footer from "./../Footer/Footer";
+import LandingImage from "./../LandingImage/LandingImage";
 
 export default class Home extends Component {
   constructor() {
@@ -14,6 +15,7 @@ export default class Home extends Component {
     return (
       <div>
       <div className="home-page">
+        <LandingImage />
         <Nav />
         <div className="bar">
           <div />

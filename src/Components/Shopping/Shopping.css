@@ -3,10 +3,11 @@
 .all-products{
     display: flex;
     flex-direction: row;
-    padding-top: 110px;
+    padding-top: 30px;
     flex-wrap: wrap;
     justify-content: center;
     margin-bottom: 30px;
+    min-height: 100%;
 }
 
 .product-container{
