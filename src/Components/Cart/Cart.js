@@ -97,7 +97,7 @@ displayItems(){
           </div>
           <div className="container">
             <div className="label">Total:</div>
-            <div className="item-total">${productTotal}.00</div>
+            <div className="item-total">${productTotal.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")}.00</div>
           </div>
           <button className="deleteItem" onClick={() => this.deleteItem(product.id)}>
             Delete
